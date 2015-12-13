@@ -1,3 +1,4 @@
+# importing data and formatting columns correctly
 df <- read.table("./household_power_consumption.txt", sep = ";", header = T)
 df$Date <- as.Date(df$Date, "%d/%m/%Y")
 df$Global_active_power <- as.numeric(as.character(df$Global_active_power))
@@ -5,9 +6,13 @@ df$Global_reactive_power <- as.numeric(as.character(df$Global_reactive_power))
 df$Voltage <- as.numeric(as.character(df$Voltage))
 df$Sub_metering_1 <- as.numeric(as.character(df$Sub_metering_1))
 df$Sub_metering_2 <- as.numeric(as.character(df$Sub_metering_2))
+
+# subsetting data from 2007-02-01 and 2007-02-02
 dfs <- subset(df, Date == "2007-02-01")
 dfs <- rbind(dfs, subset(df, Date == "2007-02-02"))
 dfs$newdate <- with(dfs, as.POSIXct(paste(Date, Time), format="%Y-%m-%d %H:%M:%S"))
+
+# generating plot
 png(filename = "plot4.png", width = 480, height = 480)
 par(mfrow = c(2, 2))
 plot(dfs$newdate, dfs$Global_active_power, type = "l", xlab = "", ylab = "Global Active Power")
